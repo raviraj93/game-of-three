@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import static com.takeaway.assignment.gameofthree.constants.GameConstants.GAME_OVER;
 import static com.takeaway.assignment.gameofthree.constants.GameConstants.GAME_STARTED;
+import static com.takeaway.assignment.gameofthree.constants.GameConstants.INVALID_NUMBER;
+import static com.takeaway.assignment.gameofthree.constants.GameConstants.PLAYER_AVAILABLE;
 
 @Slf4j
 @RestController
@@ -38,7 +40,7 @@ public class GameController {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new StartGameResponse(ex.getMessage()));
             }
         } else {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new StartGameResponse("Invalid number"));
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new StartGameResponse(INVALID_NUMBER));
         }
     }
 
@@ -46,7 +48,7 @@ public class GameController {
     @GetMapping("/start-game/automatic/{canStartAutomaticGame}")
     public ResponseEntity<StartGameResponse> startAutomaticGame(@PathVariable boolean canStartAutomaticGame) {
         return canStartAutomaticGame
-                ? ResponseEntity.ok(new StartGameResponse("Hey! I am available"))
+                ? ResponseEntity.ok(new StartGameResponse(PLAYER_AVAILABLE))
                 : startGameResponse(gameUtils.getRandomNumber());
     }
 

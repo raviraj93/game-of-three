@@ -8,7 +8,6 @@ public class GameConstants {
     public static String WINNER = "Congratulations! you win, Yayyyyyy.  Now give me a Party";
     public static String OTHER_PLAYER_WIN = "Sorry! the other player has won.  LOSER.   ";
     public static String GAME_OVER = "Game Over";
-
     public static String PLAYER_AVAILABLE = "Other Player is  available";
 
 }
