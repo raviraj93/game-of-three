@@ -4,6 +4,6 @@ import lombok.Data;
 
 @Data
 public class GameRequest {
-    private Integer number;
+    private Integer startNumber;
 }
 
