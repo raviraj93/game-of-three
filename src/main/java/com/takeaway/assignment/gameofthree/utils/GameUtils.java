@@ -42,17 +42,18 @@ public class GameUtils {
     public String getSuitableUserMessage(Integer oldNumber, Integer valueAdded) {
         Integer newNumber = getNextNumber(oldNumber, valueAdded);
         String returnMsg = "";
+
         switch (valueAdded) {
             case 0:
                 returnMsg += "just ";
                 break;
             case 1:
-                returnMsg += "added 1 => "+ (oldNumber+valueAdded) + " then ";
-                break;
             case -1:
-                returnMsg += "subtracted 1 => "+ (oldNumber+valueAdded) + " then ";
+                returnMsg += (valueAdded > 0 ? "added " : "subtracted ") + Math.abs(valueAdded) +
+                        " => " + (oldNumber + valueAdded) + " then ";
                 break;
         }
+
         returnMsg += "divided by 3 to have the number " + newNumber;
         return returnMsg;
     }

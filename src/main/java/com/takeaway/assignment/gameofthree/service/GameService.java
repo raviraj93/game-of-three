@@ -7,16 +7,12 @@ import com.takeaway.assignment.gameofthree.utils.GameUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import static com.takeaway.assignment.gameofthree.constants.GameConstants.*;
+
 @Service
 @Slf4j
 public class GameService {
     private final GameUtils gameUtils;
-
-    private Integer number;
-
-    private Integer addedNumber;
-
-    private Integer newNumber;
 
     public GameService(GameUtils gameUtils) {
         this.gameUtils = gameUtils;
@@ -28,35 +24,58 @@ public class GameService {
             GameMove gameMove = new GameMove(initialNumber);
             gameUtils.sendGameMoveToOtherPlayer(gameMove);
         } else {
-            throw new PlayerNotActiveException(GameConstants.OTHER_PLAYER_NOT_AVAILABLE);
+            throw new PlayerNotActiveException(OTHER_PLAYER_NOT_AVAILABLE);
         }
     }
 
     public void play(GameMove otherPlayerMove) {
-        number = otherPlayerMove.getNumber();
-        if (number == 1) {
-            log.info(GameConstants.OTHER_PLAYER_WIN);
+        int opponentNumber = otherPlayerMove.getNumber();
+
+        if (opponentNumber == 1) {
+            handleOpponentWin();
             return;
         }
-        GameMove myMove;
-        if (number % 3 == 0) {
-            addedNumber = 0;
-        } else {
-            addedNumber = (number + 1) % 3 == 0 ? 1 : -1;
-        }
-        newNumber = gameUtils.getNextNumber(number, addedNumber);
-        log.info(gameUtils.getSuitableUserMessage(number, addedNumber));
+
+        int addedNumber = calculateAddedNumber(opponentNumber);
+        int newNumber = gameUtils.getNextNumber(opponentNumber, addedNumber);
+
+        logOpponentMove(opponentNumber, addedNumber);
+
         if (newNumber == 1) {
-            log.info(GameConstants.WINNER);
+            log.info(WINNER);
         }
-        myMove = new GameMove(newNumber);
+
+        GameMove myMove = new GameMove(newNumber);
+
         if (gameUtils.isSecondPlayerAvailable()) {
-            log.info("sending {} to the other player", myMove.getNumber());
-            gameUtils.sendGameMoveToOtherPlayer(myMove);
+            sendMyMoveToOtherPlayer(myMove);
         } else {
-            log.info(GameConstants.OTHER_PLAYER_NOT_AVAILABLE_ANYMORE);
-            throw new PlayerNotActiveException(GameConstants.OTHER_PLAYER_NOT_AVAILABLE_ANYMORE);
+            handleSecondPlayerNotAvailable();
         }
+    }
+
+    private void handleOpponentWin() {
+        log.info(OTHER_PLAYER_WIN);
+    }
+
+    private void logOpponentMove(int opponentNumber, int addedNumber) {
+        log.info("Processing opponent move. Opponent's number: {}, Added number: {}. {}",
+                opponentNumber, addedNumber, gameUtils.getSuitableUserMessage(opponentNumber, addedNumber));
+    }
+
+    private void sendMyMoveToOtherPlayer(GameMove myMove) {
+        log.info("Sending {} to the other player", myMove.getNumber());
+        gameUtils.sendGameMoveToOtherPlayer(myMove);
+    }
+
+
+    private int calculateAddedNumber(int number) {
+        return (number % 3 == 0) ? 0 : ((number + 1) % 3 == 0) ? 1 : -1;
+    }
+
+    private void handleSecondPlayerNotAvailable() {
+        log.info(OTHER_PLAYER_NOT_AVAILABLE_ANYMORE);
+        throw new PlayerNotActiveException(OTHER_PLAYER_NOT_AVAILABLE_ANYMORE);
     }
 }
 
