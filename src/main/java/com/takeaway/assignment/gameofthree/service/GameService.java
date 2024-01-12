@@ -1,13 +1,15 @@
 package com.takeaway.assignment.gameofthree.service;
 
-import com.takeaway.assignment.gameofthree.constants.GameConstants;
 import com.takeaway.assignment.gameofthree.domain.GameMove;
 import com.takeaway.assignment.gameofthree.exception.PlayerNotActiveException;
 import com.takeaway.assignment.gameofthree.utils.GameUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import static com.takeaway.assignment.gameofthree.constants.GameConstants.*;
+import static com.takeaway.assignment.gameofthree.constants.GameConstants.OTHER_PLAYER_NOT_AVAILABLE;
+import static com.takeaway.assignment.gameofthree.constants.GameConstants.OTHER_PLAYER_NOT_AVAILABLE_ANYMORE;
+import static com.takeaway.assignment.gameofthree.constants.GameConstants.OTHER_PLAYER_WIN;
+import static com.takeaway.assignment.gameofthree.constants.GameConstants.WINNER;
 
 @Service
 @Slf4j
@@ -32,7 +34,7 @@ public class GameService {
         int opponentNumber = otherPlayerMove.getNumber();
 
         if (opponentNumber == 1) {
-            handleOpponentWin();
+            log.info(OTHER_PLAYER_WIN);
             return;
         }
 
@@ -54,16 +56,13 @@ public class GameService {
         }
     }
 
-    private void handleOpponentWin() {
-        log.info(OTHER_PLAYER_WIN);
-    }
 
-    private void logOpponentMove(int opponentNumber, int addedNumber) {
+    public void logOpponentMove(int opponentNumber, int addedNumber) {
         log.info("Processing opponent move. Opponent's number: {}, Added number: {}. {}",
                 opponentNumber, addedNumber, gameUtils.getSuitableUserMessage(opponentNumber, addedNumber));
     }
 
-    private void sendMyMoveToOtherPlayer(GameMove myMove) {
+    public void sendMyMoveToOtherPlayer(GameMove myMove) {
         log.info("Sending {} to the other player", myMove.getNumber());
         gameUtils.sendGameMoveToOtherPlayer(myMove);
     }
