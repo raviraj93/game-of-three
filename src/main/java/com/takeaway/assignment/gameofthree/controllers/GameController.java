@@ -9,6 +9,7 @@ import com.takeaway.assignment.gameofthree.utils.GameUtils;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,7 +31,7 @@ public class GameController {
     private final GameService gameService;
     private final GameUtils gameUtils;
 
-    @PostMapping("/start-game/manual")
+    @PostMapping(value = "/start-game/manual", consumes={"text/plain", "application/*"})
     public ResponseEntity<StartGameResponse> startManualGame(@RequestBody GameRequest startGameRequest) {
         if (gameUtils.isNumberValid(startGameRequest.getStartNumber())) {
             try {
@@ -45,7 +46,7 @@ public class GameController {
     }
 
 
-    @GetMapping("/start-game/automatic/{canStartAutomaticGame}")
+    @GetMapping(value = "/start-game/automatic/{canStartAutomaticGame}",  consumes={"text/plain", "application/*"})
     public ResponseEntity<StartGameResponse> startAutomaticGame(@PathVariable boolean canStartAutomaticGame) {
         return canStartAutomaticGame
                 ? ResponseEntity.ok(new StartGameResponse(PLAYER_AVAILABLE))
@@ -63,7 +64,7 @@ public class GameController {
         }
     }
 
-    @PostMapping("/play")
+    @PostMapping(value ="/play" ,  consumes =  MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> play(@RequestBody GameMove gameMove) {
         log.info("Other player played the number {}  ", gameMove.getNumber());
         try {

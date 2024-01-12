@@ -14,6 +14,7 @@ repositories {
 
 dependencies {
     implementation ("org.springframework.boot:spring-boot-starter-web")
+    testImplementation("junit:junit:4.13.1")
 
     compileOnly ("org.projectlombok:lombok:1.18.30")
     annotationProcessor ("org.projectlombok:lombok:1.18.30")
@@ -23,7 +24,7 @@ dependencies {
     testImplementation(platform("org.junit:junit-bom:5.9.1"))
     testImplementation("org.junit.jupiter:junit-jupiter")
     testImplementation("org.mockito:mockito-core:2.1.0")
-//    testImplementation("ch.qos.logback:logback-test:1.2.6")
+    testImplementation ("org.springframework.boot:spring-boot-starter-test")
 }
 
 tasks.test {
