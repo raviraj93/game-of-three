@@ -9,5 +9,4 @@ public class GameConstants {
     public static String OTHER_PLAYER_WIN = "Sorry! the other player has won.  LOSER.   ";
     public static String GAME_OVER = "Game Over";
     public static String PLAYER_AVAILABLE = "Other Player is  available";
-
 }

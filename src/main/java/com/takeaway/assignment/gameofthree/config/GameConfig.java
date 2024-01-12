@@ -3,10 +3,10 @@ package com.takeaway.assignment.gameofthree.config;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
-import org.springframework.stereotype.Component;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.web.client.RestTemplate;
 
-@Component
+@Configuration
 @Data
 public class GameConfig {
     private final Integer minimumValue;
@@ -15,10 +15,10 @@ public class GameConfig {
     private final String otherPlayerStartGameServiceUrl;
     private final RestTemplate restTemplate;
 
-    public GameConfig(@Value("game.random-number.min") Integer minimumValue,
-                      @Value("game.random-number.max") Integer maximumValue,
-                      @Value("${game.second-player.play-url}") String otherPlayerGameServiceUrl,
-                      @Value("${game.second-player.start-url}") String otherPlayerStartGameServiceUrl,
+    public GameConfig(@Value("${game.random-number.min}") Integer minimumValue,
+                      @Value("${game.random-number.max}") Integer maximumValue,
+                      @Value("${game.other-player.play-url}") String otherPlayerGameServiceUrl,
+                      @Value("${game.other-player.start-url}") String otherPlayerStartGameServiceUrl,
                       RestTemplateBuilder restTemplateBuilder) {
         this.minimumValue = minimumValue;
         this.maximumValue = maximumValue;

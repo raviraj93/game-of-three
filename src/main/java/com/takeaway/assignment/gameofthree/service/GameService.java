@@ -44,7 +44,7 @@ public class GameService {
         } else {
             addedNumber = (number + 1) % 3 == 0 ? 1 : -1;
         }
-        newNumber = gameUtils.getNewNumber(number, addedNumber);
+        newNumber = gameUtils.getNextNumber(number, addedNumber);
         log.info(gameUtils.getSuitableUserMessage(number, addedNumber));
         if (newNumber == 1) {
             log.info(GameConstants.WINNER);

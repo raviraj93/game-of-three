@@ -6,7 +6,7 @@ spring:
     name: player_one
 
 game:
-  second-player:
+  other-player:
     play-url: http://localhost:8081/game/play
     start-url: http://localhost:8081/game/start-game
   random-number:

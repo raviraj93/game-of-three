@@ -30,17 +30,17 @@ public class GameUtils {
                     String.class);
             return true;
         } catch (Exception ex) {
-            log.error("second player service API is not reachable", ex);
+            log.error("Other player is unavailable or not reachable", ex);
             return false;
         }
     }
 
     public void sendGameMoveToOtherPlayer(GameMove gameMove) {
-        config.getRestTemplate().postForObject(config.getOtherPlayerGameServiceUrl(), gameMove, GameMove.class);
+        config.getRestTemplate().postForObject(config.getOtherPlayerGameServiceUrl(), gameMove, String.class);
     }
 
     public String getSuitableUserMessage(Integer oldNumber, Integer valueAdded) {
-        Integer newNumber = getNewNumber(oldNumber, valueAdded);
+        Integer newNumber = getNextNumber(oldNumber, valueAdded);
         String returnMsg = "";
         switch (valueAdded) {
             case 0:
@@ -57,7 +57,7 @@ public class GameUtils {
         return returnMsg;
     }
 
-    public Integer getNewNumber(Integer number, Integer addedNumber) {
+    public Integer getNextNumber(Integer number, Integer addedNumber) {
         return (number + addedNumber) / 3;
     }
 }
