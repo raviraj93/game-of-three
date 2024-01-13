@@ -7,8 +7,8 @@ spring:
 
 game:
   other-player:
-    play-url: http://localhost:8081/game/play
-    start-url: http://localhost:8081/game/start-game
+    play-url: http://localhost:8081/api/v1/game/play
+    start-url: http://localhost:8081/api/v1/game/start-game
   random-number:
     min: 10
     max: 1000

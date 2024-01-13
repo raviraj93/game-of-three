@@ -25,7 +25,7 @@ import static com.takeaway.assignment.gameofthree.constants.GameConstants.PLAYER
 
 @Slf4j
 @RestController
-@RequestMapping("/game")
+@RequestMapping("/api/v1/game")
 @AllArgsConstructor
 public class GameController {
     private final GameService gameService;

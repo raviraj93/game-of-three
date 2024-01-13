@@ -32,22 +32,22 @@ java -jar build/libs/game-of-three-1.0.0-SNAPSHOT.jar  --spring.config.location=
 - start the game from the postman or commandlibe by typing one of the following URLs depends on the following options:
 1. first player start the game with automatic selection of the initial number
 ```
-http://localhost:8080/game/start-game/automatic/false 
+http://localhost:8080/api/v1/game/start-game/automatic/false 
 ```
 2. first player start the game with manual selection
 ```
-curl --location 'localhost:8080/game/start-game/manual' \
+curl --location 'localhost:8080/api/v1/game/start-game/manual' \
 --data '{
     "startNumber" : 34
 }'
 ```
 3. second player start the game with automatic selection of the initial number
 ```
-http://localhost:8081/threegame/start-game/automatic/false 
+http://localhost:8081/api/v1/game/start-game/automatic/false 
 ```
 4. second player start the game with manual selection of the initial number (100 for example)
 ```
-curl --location 'localhost:8080/game/start-game/manual' \
+curl --location 'localhost:8080/api/v1/game/start-game/manual' \
 --data '{
     "startNumber" : 340
 }'

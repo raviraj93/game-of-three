@@ -47,13 +47,14 @@ public class GameControllerIntegrationTest {
     void setUp() {
         objectMapper = new ObjectMapper();
     }
+    private static final String BASE_URL = "/api/v1/game/";
 
     @Test
     void startManualGameWithValidNumberReturnsGameStartedResponse() throws Exception {
         GameRequest gameRequest = new GameRequest(10);
         when(gameUtils.isNumberValid(gameRequest.getStartNumber())).thenReturn(true);
 
-        mockMvc.perform(MockMvcRequestBuilders.post("/game/start-game/manual")
+        mockMvc.perform(MockMvcRequestBuilders.post(BASE_URL  + "start-game/manual")
                         .contentType(MediaType.APPLICATION_JSON)
                         .characterEncoding("utf-8")
                         .content(objectMapper.writeValueAsBytes(gameRequest)))
@@ -69,7 +70,7 @@ public class GameControllerIntegrationTest {
         GameRequest gameRequest = new GameRequest(0);
         when(gameUtils.isNumberValid(gameRequest.getStartNumber())).thenReturn(false);
 
-        mockMvc.perform(MockMvcRequestBuilders.post("/game/start-game/manual")
+        mockMvc.perform(MockMvcRequestBuilders.post(BASE_URL  + "start-game/manual")
                         .characterEncoding("utf-8")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsBytes(gameRequest)))
@@ -81,7 +82,7 @@ public class GameControllerIntegrationTest {
 
     @Test
     void testStartAutomaticGameWithPlayerAvailableReturnsPlayerAvailableResponse() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get("/game/start-game/automatic/true"))
+        mockMvc.perform(MockMvcRequestBuilders.get(BASE_URL  + "/start-game/automatic/true"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.message").value(PLAYER_AVAILABLE));
 
@@ -93,7 +94,7 @@ public class GameControllerIntegrationTest {
         when(gameUtils.getRandomNumber()).thenReturn(5);
         when(gameUtils.isSecondPlayerAvailable()).thenReturn(false);
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/game/start-game/automatic/false"))
+        mockMvc.perform(MockMvcRequestBuilders.get(BASE_URL  + "/start-game/automatic/false"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.message").value(GAME_STARTED));
 
@@ -105,7 +106,7 @@ public class GameControllerIntegrationTest {
     void testPlayValidMoveReturnsMoveProcessedResponse() throws Exception {
         GameMove gameMove = new GameMove(7);
 
-        mockMvc.perform(MockMvcRequestBuilders.post("/game/play")
+        mockMvc.perform(MockMvcRequestBuilders.post(BASE_URL  + "play")
                         .contentType(MediaType.APPLICATION_JSON)
                         .characterEncoding("utf-8")
                         .content(objectMapper.writeValueAsBytes(gameMove)))
