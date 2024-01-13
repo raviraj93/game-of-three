@@ -31,7 +31,7 @@ public class GameController {
     private final GameService gameService;
     private final GameUtils gameUtils;
 
-    @PostMapping(value = "/start-game/manual", consumes={"text/plain", "application/*"})
+    @PostMapping( "/start-game/manual")
     public ResponseEntity<StartGameResponse> startManualGame(@RequestBody GameRequest startGameRequest) {
         if (gameUtils.isNumberValid(startGameRequest.getStartNumber())) {
             try {
@@ -45,14 +45,14 @@ public class GameController {
         }
     }
 
-    @GetMapping(value = "/start-game/automatic/{canStartAutomaticGame}",  consumes={"text/plain", "application/*"})
+    @GetMapping( "/start-game/automatic/{canStartAutomaticGame}")
     public ResponseEntity<StartGameResponse> startAutomaticGame(@PathVariable boolean canStartAutomaticGame) {
         return canStartAutomaticGame
                 ? ResponseEntity.ok(new StartGameResponse(PLAYER_AVAILABLE))
                 : startGameResponse(gameUtils.getRandomNumber());
     }
 
-    @PostMapping(value ="/play" ,  consumes =  MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping("/play")
     public ResponseEntity<String> play(@RequestBody GameMove gameMove) {
         log.info("Other player played the number {}  ", gameMove.getNumber());
         try {
