@@ -45,23 +45,11 @@ public class GameController {
         }
     }
 
-
     @GetMapping(value = "/start-game/automatic/{canStartAutomaticGame}",  consumes={"text/plain", "application/*"})
     public ResponseEntity<StartGameResponse> startAutomaticGame(@PathVariable boolean canStartAutomaticGame) {
         return canStartAutomaticGame
                 ? ResponseEntity.ok(new StartGameResponse(PLAYER_AVAILABLE))
                 : startGameResponse(gameUtils.getRandomNumber());
-    }
-
-    private ResponseEntity<StartGameResponse> startGameResponse(Integer initialNumber) {
-        try {
-            gameService.startGame(initialNumber);
-            return ResponseEntity.ok(new StartGameResponse(GAME_STARTED));
-        } catch (PlayerNotActiveException ex) {
-            return ResponseEntity
-                    .status(HttpStatus.NOT_FOUND)
-                    .body(new StartGameResponse(ex.getMessage()));
-        }
     }
 
     @PostMapping(value ="/play" ,  consumes =  MediaType.APPLICATION_JSON_VALUE)
@@ -74,6 +62,17 @@ public class GameController {
             return ResponseEntity
                     .status(HttpStatus.NOT_FOUND)
                     .body(GAME_OVER);
+        }
+    }
+
+    private ResponseEntity<StartGameResponse> startGameResponse(Integer initialNumber) {
+        try {
+            gameService.startGame(initialNumber);
+            return ResponseEntity.ok(new StartGameResponse(GAME_STARTED));
+        } catch (PlayerNotActiveException ex) {
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body(new StartGameResponse(ex.getMessage()));
         }
     }
 }
