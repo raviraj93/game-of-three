@@ -1,5 +1,6 @@
 package com.takeaway.assignment.gameofthree.listener;
 
+import com.takeaway.assignment.gameofthree.domain.Game;
 import com.takeaway.assignment.gameofthree.domain.GameMove;
 import com.takeaway.assignment.gameofthree.domain.GameMoveEvent;
 import com.takeaway.assignment.gameofthree.utils.GameUtils;
@@ -19,6 +20,9 @@ class GameMoveEventListenerTest {
     @Mock
     private GameUtils gameUtils;
 
+    @Mock
+    private Game game;
+
     @InjectMocks
     private GameMoveEventListener eventListener;
 
@@ -36,7 +40,7 @@ class GameMoveEventListenerTest {
 
         eventListener.onApplicationEvent(event);
 
-        verify(gameUtils, times(1)).sendGameMoveToOtherPlayer(gameMove);
+        verify(game, times(1)).sendGameMoveToOtherPlayer(gameMove);
     }
 
     @Test
@@ -48,6 +52,6 @@ class GameMoveEventListenerTest {
 
         eventListener.onApplicationEvent(event);
 
-        verify(gameUtils, never()).sendGameMoveToOtherPlayer(gameMove);
+        verify(game, never()).sendGameMoveToOtherPlayer(gameMove);
     }
 }

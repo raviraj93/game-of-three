@@ -3,6 +3,7 @@ package com.takeaway.assignment.gameofthree.service;
 import ch.qos.logback.classic.Logger;
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.read.ListAppender;
+import com.takeaway.assignment.gameofthree.domain.Game;
 import com.takeaway.assignment.gameofthree.domain.GameMove;
 import com.takeaway.assignment.gameofthree.domain.GameMoveEvent;
 import com.takeaway.assignment.gameofthree.exception.PlayerNotActiveException;
@@ -31,6 +32,9 @@ class GameServiceTest {
 
     @Mock
     private ApplicationEventPublisher eventPublisher;
+
+    @Mock
+    private Game game;
 
     @InjectMocks
     private GameService gameService;
@@ -67,7 +71,7 @@ class GameServiceTest {
 
         when(gameUtils.getNextNumber(anyInt(), anyInt())).thenReturn(1);
         when(gameUtils.isSecondPlayerAvailable()).thenReturn(true);
-        when(gameUtils.getSuitableUserMessage(anyInt(), anyInt())).thenReturn("5");
+        when(game.getSuitableUserMessage(anyInt(), anyInt())).thenReturn("5");
 
         gameService.play(opponentMove);
 
