@@ -1,9 +1,11 @@
 package com.takeaway.assignment.gameofthree.service;
 
 import com.takeaway.assignment.gameofthree.domain.GameMove;
+import com.takeaway.assignment.gameofthree.domain.GameMoveEvent;
 import com.takeaway.assignment.gameofthree.exception.PlayerNotActiveException;
 import com.takeaway.assignment.gameofthree.utils.GameUtils;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
 import static com.takeaway.assignment.gameofthree.constants.GameConstants.OTHER_PLAYER_NOT_AVAILABLE;
@@ -15,16 +17,17 @@ import static com.takeaway.assignment.gameofthree.constants.GameConstants.WINNER
 @Slf4j
 public class GameService {
     private final GameUtils gameUtils;
+    private final ApplicationEventPublisher eventPublisher;
 
-    public GameService(GameUtils gameUtils) {
+    public GameService(GameUtils gameUtils, ApplicationEventPublisher eventPublisher) {
         this.gameUtils = gameUtils;
+        this.eventPublisher = eventPublisher;
     }
-
     public void startGame(Integer initialNumber) {
         if (gameUtils.isSecondPlayerAvailable()) {
             log.info("the game is starting with initial number {} and sending it to the other player" , initialNumber);
             GameMove gameMove = new GameMove(initialNumber);
-            gameUtils.sendGameMoveToOtherPlayer(gameMove);
+            eventPublisher.publishEvent(new GameMoveEvent(this , gameMove));
         } else {
             throw new PlayerNotActiveException(OTHER_PLAYER_NOT_AVAILABLE);
         }
@@ -62,9 +65,9 @@ public class GameService {
                 opponentNumber, addedNumber, gameUtils.getSuitableUserMessage(opponentNumber, addedNumber));
     }
 
-    public void sendMyMoveToOtherPlayer(GameMove myMove) {
-        log.info("Sending {} to the other player", myMove.getNumber());
-        gameUtils.sendGameMoveToOtherPlayer(myMove);
+    public void sendMyMoveToOtherPlayer(GameMove move) {
+        log.info("Sending {} to the other player", move.getNumber());
+        eventPublisher.publishEvent(new GameMoveEvent(this , move));
     }
 
 

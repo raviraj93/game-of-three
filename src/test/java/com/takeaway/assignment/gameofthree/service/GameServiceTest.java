@@ -4,6 +4,7 @@ import ch.qos.logback.classic.Logger;
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.read.ListAppender;
 import com.takeaway.assignment.gameofthree.domain.GameMove;
+import com.takeaway.assignment.gameofthree.domain.GameMoveEvent;
 import com.takeaway.assignment.gameofthree.exception.PlayerNotActiveException;
 import com.takeaway.assignment.gameofthree.utils.GameUtils;
 import org.junit.jupiter.api.BeforeEach;
@@ -11,6 +12,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.ApplicationEventPublisher;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -27,6 +29,9 @@ class GameServiceTest {
     @Mock
     private GameUtils gameUtils;
 
+    @Mock
+    private ApplicationEventPublisher eventPublisher;
+
     @InjectMocks
     private GameService gameService;
 
@@ -41,7 +46,7 @@ class GameServiceTest {
 
         gameService.startGame(42);
 
-        verify(gameUtils, times(1)).sendGameMoveToOtherPlayer(any(GameMove.class));
+        verify(eventPublisher, times(1)).publishEvent(any(GameMoveEvent.class));
     }
 
     @Test
@@ -83,7 +88,7 @@ class GameServiceTest {
 
         gameService.play(opponentMove);
 
-        verify(gameUtils, times(1)).sendGameMoveToOtherPlayer(any(GameMove.class));
+        verify(eventPublisher, times(1)).publishEvent(any(GameMoveEvent.class));
     }
 
     @Test
