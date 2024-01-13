@@ -47,6 +47,7 @@ public class GameService {
         int opponentNumber = otherPlayerMove.getNumber();
 
         if (opponentNumber == 1) {
+            removePlayer();
             log.info(OTHER_PLAYER_WIN);
             return;
         }
@@ -57,6 +58,7 @@ public class GameService {
         logOpponentMove(opponentNumber, addedNumber);
 
         if (newNumber == 1) {
+            removePlayer();
             log.info(WINNER);
         }
 
